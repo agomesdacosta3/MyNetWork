@@ -1,6 +1,6 @@
 export default class PostApi{
 
-    url = "http://localhost:3004/articles"
+    url = "http://localhost:3004/articles/"
 
     static _instance ;
 
@@ -13,9 +13,27 @@ export default class PostApi{
 
     async getAll(){
         try{
-            const reponse = await fetch(this.url);
+            const reponse = await fetch(this.url+"?sort=date:desc");
             const data = await reponse.json()
             return data
+        }catch(ex){
+            console.log(ex)
+        }
+    }
+
+    async create(post){
+
+        try{
+            const options = {
+                method : "POST",
+                body : JSON.stringify(post),
+                headers : {
+                    "content-type" : "application/json"
+                }
+            }
+           const reponse = await fetch(this.url, options)
+           const data = await reponse.json();
+           return data ;
         }catch(ex){
             console.log(ex)
         }
@@ -26,6 +44,24 @@ export default class PostApi{
             const reponse = await fetch(`${this.url}/${id}`);
             const data = await reponse.json()
             return data
+        }catch(ex){
+            console.log(ex)
+        }
+    }
+
+    async createComm(id,comm){
+         
+        try{
+            const options = {
+                method : "PUT",
+                body : JSON.stringify(comm),
+                headers : {
+                    "content-type" : "application/json"
+                }
+            }
+           const reponse = await fetch(this.url + id, options)
+           const data = await reponse.json();
+           return data ;
         }catch(ex){
             console.log(ex)
         }
